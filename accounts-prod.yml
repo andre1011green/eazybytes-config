@@ -2,7 +2,7 @@ build:
   version: "1.0"
 
 accounts:
-  message: "Hey, welcome Andre to EazyBank accounts related PINKY PRODUCTIONs APIs"
+  message: "Hey, welcome Andre to EazyBank accounts related bluey PRODUCTIONs APIs"
   contactDetails:
     name: "Jack Benny - Product Owner"
     email: "{cipher}1fca5f5f6104a337ffd107b71beea4d05c3d1156d64a3c0574439bf9c54d89bb1b749fc3fecb17cd9cb6f8835878b2a2"
