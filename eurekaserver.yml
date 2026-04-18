@@ -1,4 +1,7 @@
 spring:
+ server:
+  port: 8070
+
   application:
     name: "eurekaserver"
   config:
