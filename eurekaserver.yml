@@ -11,6 +11,7 @@ eureka:
     serviceUrl:
       defaultZone: http://eurekaserver:8070/eureka/
 
+
 management:
   endpoints:
     web:
