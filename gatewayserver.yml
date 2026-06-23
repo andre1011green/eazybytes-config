@@ -6,7 +6,39 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: false
+
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 3s
+
+      routes:
+        - id: accounts
+          uri: lb://ACCOUNTS
+          predicates:
+            - Path=/eazybank/accounts/**
+          filters:
+            - RewritePath=/eazybank/accounts/(?<segment>.*), /${segment}
+            - AddResponseHeader=X-Response-Time, #{T(java.time.LocalDateTime).now()}
+            - CircuitBreaker=name=accountsCircuitbreaker,fallbackUri=forward:/contactSupport
+
+        - id: loans
+          uri: lb://LOANS
+          predicates:
+            - Path=/eazybank/loans/api/**
+          filters:
+            - RewritePath=/eazybank/loans/api/(?<segment>.*), /api/${segment}
+            - AddResponseHeader=X-Response-Time, #{T(java.time.LocalDateTime).now()}
+            - Retry=3,100,1000,2,true
+            - CircuitBreaker=name=loansCircuitbreaker,fallbackUri=forward:/contactSupport
+
+        - id: cards
+          uri: lb://CARDS
+          predicates:
+            - Path=/eazybank/cards/**
+          filters:
+            - RewritePath=/eazybank/cards/(?<segment>.*), /${segment}
+            - AddResponseHeader=X-Response-Time, #{T(java.time.LocalDateTime).now()}
 
 eureka:
   instance:
@@ -16,3 +48,4 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: "http://localhost:8070/eureka/"
+
