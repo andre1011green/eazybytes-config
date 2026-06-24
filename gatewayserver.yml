@@ -11,6 +11,7 @@ spring:
           enabled: false
 
       httpclient:
+        type: reactor
         connect-timeout: 2000
         response-timeout: 3s
 
@@ -32,7 +33,9 @@ spring:
             - RewritePath=/eazybank/loans/api/(?<segment>.*), /api/${segment}
             - AddResponseHeader=X-Response-Time, #{T(java.time.LocalDateTime).now()}
             - Retry=3,100,1000,2,true
-            - CircuitBreaker=name=loansCircuitbreaker,fallbackUri=forward:/contactSupport
+          metadata:
+              response-timeout: 3000
+              connect-timeout: 2000
 
         - id: cards
           uri: lb://CARDS
